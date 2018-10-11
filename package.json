@@ -1,0 +1,53 @@
+{
+  "name": "greavesbrewster",
+  "version": "2.0.0",
+  "description": "A custom WordPress theme for greavesbrewster",
+  "main": "index.js",
+  "scripts": {
+    "clean": "rm -r dist",
+    "mkdir": "mkdir -p dist/js && mkdir -p dist/css",
+
+    "build:js-main": "bundle-js ./src/js/main.js -o ./dist/js/main.js",
+    "watch:js": "watch 'npm run build:js-minified' ./src/js/",
+
+    "build:js-lib": "bundle-js ./src/js/lib.js -o ./dist/js/lib.js",
+    "watch:js-lib": "watch 'npm run build:js-minified' ./src/js/",
+
+    "build:js": "npm run build:js-main && npm run build:js-lib",
+
+
+
+    "build:uglify-main": "uglifyjs dist/js/main.js -o dist/js/main.min.js  --source-map",
+    "build:uglify-lib": "uglifyjs dist/js/lib.js -o dist/js/lib.min.js  --source-map",
+    "build:uglify": "npm run build:uglify-main && npm run build:uglify-lib",
+
+    "build:js-minified": "npm run build:js && npm run build:uglify ",
+    "watch:uglify:js": "watch 'npm run build:uglify' .",
+
+    "build:images": "imagemin src/images/**/* --out-dir=dist/images",
+    "build": "npm run mkdir && npm run build:js && npm run build:js-lib && npm run build:uglify && npm run build:sass-main && npm run build:images",
+    "build:sass-main": "node-sass --output-style=compressed --source-map=true --output=dist/css/ src/scss/main.scss dist/css/main.css",
+    "watch:sass-main": "watch 'npm run build:sass-main' src/scss/",
+    "build:watch": "parallelshell 'npm run watch:js' 'npm run watch:sass-main' "
+  },
+  "author": "Wynterhill",
+  "license": "ISC",
+  "devDependencies": {
+    "browserify": "latest",
+    "bundle": "^2.1.0",
+    "bundle-js": "^1.0.2",
+    "imagemin-cli": "^3.0.0",
+    "imagemin-webp": "latest",
+    "node-sass": "^4.9.3",
+    "normalize.css": "^8.0.0",
+    "parallelshell": "^3.0.2",
+    "stylus": "latest",
+    "susy": "^2.2.12",
+    "uglify-js": "^3.4.9",
+    "watch": "latest",
+    "slick-carousel": "^1.6.0",
+  },
+  "dependencies": {
+    "browserfy": "^1.0.0"
+  }
+}
